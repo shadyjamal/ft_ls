@@ -1,0 +1,25 @@
+Makefile
+    *.c
+    %.o
+ls:
+    DIR *opendir(const char *filename);
+
+    struct dirent *readdir(DIR *dirp);
+
+    int closedir(DIR *dirp);
+
+    int stat(const char *restrict path, struct stat *restrict buf); 
+        function obtains information about the file pointed to by path.
+
+    int lstat(const char *restrict path, struct stat *restrict buf);
+        symbolik link difference
+    
+    struct passwd *getpwuid(uid_t uid);
+        search the password data-base for the given login name, user uid, or user uuid respectively, always
+        returning the first one encountered.
+    time_t time(time_t *tloc);
+    
+    char *ctime(const time_t *clock);
+    
+    ssize_t readlink(const char *restrict path, char *restrict buf, size_t bufsize);
+        places the contents of the symbolic link path in the buffer buf, which has size bufsize
