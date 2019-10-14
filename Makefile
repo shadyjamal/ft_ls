@@ -1,30 +1,35 @@
 NAME = ft_ls
 
-SRC = $(wildcard srcs/*.c)
+DIR_LFT = libft
 
-FLAGS := -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra
+
+SRC = srcs/*.c
 
 INC = -Iincludes/
 
 CC = gcc
 
-OBJ = $(patsubst %.c,%.o,$(SRC))
+OBJ = $(SRC:.c=.o)
 
-LIB = -Llibft/
+all: $(NAME)
 
-all : $(NAME)
-
-%.o : %.c 
-	@$(CC) $(INC) -o $@ -c $<
-
-$(NAME) : $(OBJ)
+$(NAME): $(OBJ)
 	@make -C libft/
-	@$(CC) $(FLAGS) $(INC) $(LIB) -o $@ $^
+	$(CC) $(FLAGS) $(INC) $(OBJ) -Llibft/ -lft -o $(NAME)
 
-clean	: 
-	@rm -rf srcs/*.o
+srcs/%.o: srcs/%.c
+	@echo "\033[34m$^ \033[0m-> \033[1m\033[37m$@\033[0m"
+	@$(CC) $(FLAGS) -c $^ -o $@
 
-fclean	: clean 
-	@rm -rf $(NAME)
+clean:
+	echo "\033[31mDelete .o of $(NAME)\033[0m"
+	@/bin/rm -f $(OBJ)
+	@(cd $(DIR_LFT) && make clean)
 
-re : fclean all
+fclean: clean
+	echo "\033[31mDelete .o and $(NAME)\033[0m"
+	@/bin/rm -f $(NAME)
+	@(cd $(DIR_LFT) && make fclean)
+
+re: fclean all

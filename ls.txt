@@ -1,6 +1,4 @@
-Makefile
-    *.c
-    %.o
+
 ls:
     DIR *opendir(const char *filename);
 
@@ -17,6 +15,7 @@ ls:
     struct passwd *getpwuid(uid_t uid);
         search the password data-base for the given login name, user uid, or user uuid respectively, always
         returning the first one encountered.
+
     time_t time(time_t *tloc);
     
     char *ctime(const time_t *clock);
