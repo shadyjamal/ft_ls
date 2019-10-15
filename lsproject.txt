@@ -52,3 +52,27 @@ management of columns without -l (man 4 tty)
 	sort 2 lists 
 	display depending on flags
 	------------------------------------------------------------------------------
+
+firt try;
+
+typedef struct s_dir
+{
+
+}			t_dir
+typedef struct s_content
+{
+    char            *filename;
+    char            *permissions;
+    char            *timelastmodif;
+    int             size;
+    char            *user;
+    char            *group;
+    struct s_file   *next;
+}               t_file;
+
+if (S_ISREG(mode)) ftype = '-';
+  if (S_ISLNK(mode)) ftype = 'l';
+  if (S_ISDIR(mode)) ftype = 'd';
+  if (S_ISBLK(mode)) ftype = 'b';
+  if (S_ISCHR(mode)) ftype = 'c';
+  if (S_ISFIFO(mode)) ftype = '|';
