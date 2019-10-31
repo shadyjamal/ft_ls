@@ -11,29 +11,42 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
+#include <sys/errno.h>
+#include "../libft/libft.h"
 
-typedef struct s_content
-{
-    char                *filename;
-    char                *permissions;
-    char                *timelastmodif;
-    int                 size;
-    char                *user;
-    char                *group;
-    struct s_content    *next;
-}               t_content;
+#define LS_a 1
+#define LS_l 2
+#define LS_r 4
+#define LS_upr 8
+#define LS_t 16
 
-typedef struct s_lstdir
+typedef struct		s_file
 {
-    DIR                 *op;
-    struct dirent       *entry;
-    char                *dirname;
-    char                *prms;
-    char                *timelstmdf;
-    int                 size;
-    char                *user;
-    char                *group;
-    struct s_content    *files;
-    struct s_dir        *next;
-}               t_lstdir;
+	char			*name;
+	char			*path;
+	time_t			date;
+	mode_t			st_mode;
+	nlink_t			st_nlink;
+	uid_t			st_uid;
+	gid_t			st_gid;
+	off_t			st_size;
+	quad_t			st_blocks;
+	dev_t			st_rdev;
+	struct s_file	*next;
+}					t_file;
 #endif
+
+void    parse_arg(int ac, char **av, int *flag, t_list **begin);
+
+int		ft_sort_tab(char **tab, int size);
+
+void   ls_main(t_list *begin, int *flag);
+
+void    getdata(t_file **files, char *name, char *path);
+
+//debug
+
+void printtab(char **str, int size);
+void printlst(t_list *begin);
+void printlstfile(t_file *begin);

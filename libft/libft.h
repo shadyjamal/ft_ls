@@ -94,5 +94,6 @@ int					ft_isspace(int c);
 int					ft_lissize(t_list *begin_list);
 int					ft_isblank(int c);
 int					get_next_line(const int fd, char **line);
-
+void	ft_lstpushback(t_list **blst, void const *content,
+		size_t content_size);
 #endif

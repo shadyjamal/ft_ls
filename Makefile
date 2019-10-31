@@ -4,7 +4,7 @@ DIR_LFT = libft
 
 FLAGS = -Wall -Werror -Wextra
 
-SRC = srcs/*.c
+SRC = $(wildcard srcs/*.c)
 
 INC = -Iincludes/
 
@@ -19,8 +19,8 @@ $(NAME): $(OBJ)
 	$(CC) $(FLAGS) $(INC) $(OBJ) -Llibft/ -lft -o $(NAME)
 
 srcs/%.o: srcs/%.c
-	@echo "\033[34m$^ \033[0m-> \033[1m\033[37m$@\033[0m"
-	@$(CC) $(FLAGS) -c $^ -o $@
+	echo "\033[34m$^ \033[0m-> \033[1m\033[37m$@\033[0m"
+	@$(CC) $(FLAGS) $(INC) -c $< -o $@
 
 clean:
 	echo "\033[31mDelete .o of $(NAME)\033[0m"
