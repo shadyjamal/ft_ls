@@ -1,5 +1,25 @@
 #include "ft_ls.h"
 
+void    ls_directories(t_list *dir, int *flag)
+{
+    t_list          *cur;
+    t_file          *list;
+    DIR             *op;
+    struct dirent   *entry;
+    
+    list = NULL;
+    cur = dir;
+    printf("FLAG = %d\n", *flag);
+    while (cur)
+    {
+        op = opendir(cur->content);
+        while ((entry = readdir(op)))
+            getdata(&list, entry->d_name, ft_strjoin(cur->content,"/"));
+        (void)closedir(op);
+        ft_displaydir(cur->content, list);
+        cur = cur->next;
+    }
+}
 void        ls_files(t_list *file, int *flag)
 {
     t_list  *cur;
@@ -12,11 +32,10 @@ void        ls_files(t_list *file, int *flag)
         getdata(&list, cur->content, "");
         cur = cur->next; 
     }
-    printlstfile(list);
+    //printlstfile(list);
     printf("FLAG = %d\n", *flag);
-    //displayfiles();
+    ft_simple_display(list);
 }
-
 void        ls_main(t_list *begin, int *flag)
 {
     DIR     *dir;
@@ -31,7 +50,7 @@ void        ls_main(t_list *begin, int *flag)
     {
         if (!(dir = opendir(cur->content)))
             errno == ENOTDIR ? ft_lstpushback(&files, cur->content, cur->content_size) : \
-                             printf("%s no such file errno = %d\n", cur->content, errno); // error errno 2
+                             print_error(cur->content);/// error errno 2
         else
         {
             ft_lstpushback(&directory, cur->content, cur->content_size);
@@ -43,5 +62,5 @@ void        ls_main(t_list *begin, int *flag)
     if (files)
         ls_files(files, flag);
     if (directory)
-        printf("\n\nshow directories\n\n");
+        ls_directories(directory, flag);
 }    

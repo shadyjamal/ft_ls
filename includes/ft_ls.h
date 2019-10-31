@@ -50,3 +50,8 @@ void    getdata(t_file **files, char *name, char *path);
 void printtab(char **str, int size);
 void printlst(t_list *begin);
 void printlstfile(t_file *begin);
+
+// display
+void    print_error(char *content);
+void    ft_simple_display(t_file *list);
+void    ft_displaydir(char *dirname, t_file *list);

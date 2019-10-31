@@ -12,13 +12,10 @@ int     get_index(char *str, char c)
 {
     int i;
 
-    i = 0;
-    while (str[i])
-    {
+    i = -1;
+    while (str[++i])
         if (str[i] == c)
             return (i);
-        i++;
-    }
     return (-1);
 }
 
@@ -33,8 +30,7 @@ int    get_flags(int *flag, char *str)
     {
         if ((n = get_index("alrRt",str[i])) == -1)
             return (-1);    // usage ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...] error function
-        *flag |= (1 << n);
-             
+        *flag |= (1 << n);   
     }
     return (1);
 }
@@ -60,5 +56,5 @@ void    parse_arg(int ac, char **av, int *flag, t_list **begin)
     ft_sort_tab((av += i), (ac -= i));
     while (av[++j])
             ft_lstpushback(begin, av[j], strlen(av[j]) + 1);
-    printlst(*begin);
+    //printlst(*begin);
 }

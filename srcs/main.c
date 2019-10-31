@@ -7,7 +7,8 @@ int main(int ac, char **av)
 
     begin = NULL;
     parse_arg(ac, av, &flag, &begin);
-    //printlst(begin);
+    //printf("Flag => %d\n", flag);
+    //printlst(begin); // debug
     ls_main(begin, &flag);
 	return (0);
 }

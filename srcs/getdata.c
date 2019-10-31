@@ -17,9 +17,10 @@ t_file      *newnode(char *name, char *path)
     struct stat buf;
 
     if (!(node = (t_file*)malloc(sizeof(t_file))) || !(node->name = ft_strdup(name)))
-        printf("mall error"); // malloc error
-    node->path = ft_strjoin(path, name);
-    lstat(node->path, &buf); // check errno
+        return (0); // malloc error
+    if (!(node->path = ft_strjoin(path, name)))
+        return (0);
+    lstat(node->path, &buf); // check error & errno
     node->st_blocks = buf.st_blocks;
     node->st_gid = buf.st_gid;
     node->st_mode = buf.st_mode;
