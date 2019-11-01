@@ -1,29 +1,28 @@
 #include "ft_ls.h"
 
-void    print_error(char *content)
-{
-    write(2, "ft_ls: ", 7);
-    ft_putstr_fd(content, 2);
-    ft_putendl_fd(": No such file or directory", 2);
-}
-
-void    ft_simple_display(t_file *list)
+static void    ft_simple_display(t_file *list, int *flag)
 {
     while (list)
     {
-        ft_putendl(list->name);
+        if (!(!(*flag & LS_a) && list->name[0] == '.'))
+            ft_putendl(list->name);
         list = list->next;        
     }
 }
 
-void    ft_displaydir(char *dirname, t_file *list)
+void    dir_name(char *dirname)
 {
     write(1,"\n",1);
     ft_putstr(dirname);
-    write(1,":\n",2);
-    while (list)
-    {
-        ft_putendl(list->name);
-        list = list->next;
-    }      
+    write(1,":\n",2);      
+}
+
+void    ft_display(t_file *list, int *flag)
+{
+    //sort list of files depending on flag
+    // ((*flag & LS_r)) sort by reverse ascii
+    // ((*flag & LS_t)) sort by last time modified
+    // ((*flag & LS_t) && ((*flag & LS_r))) sort by reverse last time modified
+    ((*flag & LS_l)) ?  /*ft_long_display*/ft_simple_display(list, flag) : ft_simple_display(list, flag);
+
 }

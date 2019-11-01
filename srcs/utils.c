@@ -21,3 +21,5 @@ int		ft_sort_tab(char **tab, int size)
 	}
 	return (1);
 }
+
+//void	ft_sort_list()

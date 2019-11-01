@@ -1,26 +1,6 @@
 #include "ft_ls.h"
 
-void    ls_directories(t_list *dir, int *flag)
-{
-    t_list          *cur;
-    t_file          *list;
-    DIR             *op;
-    struct dirent   *entry;
-    
-    list = NULL;
-    cur = dir;
-    printf("FLAG = %d\n", *flag);
-    while (cur)
-    {
-        op = opendir(cur->content);
-        while ((entry = readdir(op)))
-            getdata(&list, entry->d_name, ft_strjoin(cur->content,"/"));
-        (void)closedir(op);
-        ft_displaydir(cur->content, list);
-        cur = cur->next;
-    }
-}
-void        ls_files(t_list *file, int *flag)
+t_file    *storedata(t_list *file, int *flag)
 {
     t_list  *cur;
     t_file  *list;
@@ -32,9 +12,40 @@ void        ls_files(t_list *file, int *flag)
         getdata(&list, cur->content, "");
         cur = cur->next; 
     }
-    //printlstfile(list);
     printf("FLAG = %d\n", *flag);
-    ft_simple_display(list);
+    return (list);
+}
+
+void    ls_directories(t_list *dir, int *flag)
+{
+    t_file          *listdir;
+    t_file          *cur;
+    t_file          *listfiles;    
+    DIR             *op;
+    struct dirent   *entry;
+    
+    listfiles = NULL;
+    listdir = storedata(dir, flag);
+    cur = listdir;
+    while (cur)
+    {
+        op = opendir(cur->name);
+        while ((entry = readdir(op)))
+            getdata(&listfiles, entry->d_name, ft_strjoin(cur->name, "/"));
+        (void)closedir(op);
+        dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
+        ft_display(listfiles, flag);
+        listfiles = NULL; // free listfiles before using it in the next dir
+        cur = cur->next;
+    }
+}
+
+void        ls_files(t_list *file, int *flag)
+{
+    t_file  *list;
+
+    list = storedata(file, flag);
+    ft_display(list, flag);
 }
 void        ls_main(t_list *begin, int *flag)
 {

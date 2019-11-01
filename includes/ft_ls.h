@@ -44,6 +44,7 @@ int		ft_sort_tab(char **tab, int size);
 void   ls_main(t_list *begin, int *flag);
 
 void    getdata(t_file **files, char *name, char *path);
+t_file    *storedata(t_list *file, int *flag);
 
 //debug
 
@@ -52,6 +53,6 @@ void printlst(t_list *begin);
 void printlstfile(t_file *begin);
 
 // display
+void    ft_display(t_file *list, int *flag);
 void    print_error(char *content);
-void    ft_simple_display(t_file *list);
-void    ft_displaydir(char *dirname, t_file *list);
+void    dir_name(char *dirname);
