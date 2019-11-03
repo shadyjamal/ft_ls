@@ -31,11 +31,11 @@ void    ls_directories(t_list *dir, int *flag)
     {
         op = opendir(cur->name);
         while ((entry = readdir(op)))
-            getdata(&listfiles, entry->d_name, ft_strjoin(cur->name, "/"));
+            getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"));
         (void)closedir(op);
         dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
         ft_display(listfiles, flag);
-        listfiles = NULL; // free listfiles before using it in the next dir
+        freelst(&listfiles); // free listfiles before using it in the next dir
         cur = cur->next;
     }
 }

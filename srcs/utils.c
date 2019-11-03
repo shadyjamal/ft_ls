@@ -21,5 +21,28 @@ int		ft_sort_tab(char **tab, int size)
 	}
 	return (1);
 }
+void	freenode(t_file *node)
+{
+	ft_strdel(&node->name);
+	ft_strdel(&node->path);
+	// free(node->st_blocks);
+	// free(node->st_gid);
+	// free(node->st_mode);
+	// free(node->st_nlink);
+	// free(node->st_rdev);
+	// free(node->st_size);
+	// free(node->st_uid);
+}
+void	freelst(t_file **begin)
+{
+	t_file	*cur;
 
-//void	ft_sort_list()
+	cur = *begin;
+	while (cur)
+	{
+		freenode(cur);
+		cur = cur->next;
+	}
+	*begin = NULL;
+}
+// void	ft_sort_list()

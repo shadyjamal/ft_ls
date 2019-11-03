@@ -56,3 +56,5 @@ void printlstfile(t_file *begin);
 void    ft_display(t_file *list, int *flag);
 void    print_error(char *content);
 void    dir_name(char *dirname);
+// free
+void	freelst(t_file **begin);

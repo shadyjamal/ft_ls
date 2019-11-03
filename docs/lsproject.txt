@@ -33,84 +33,31 @@ ls
 -g
 management of columns without -l (man 4 tty)
 
-*************************************************************************************
-
-1st step
-
-	do the getstated
-	------------------------------------------------------------------------------
-	read all arguments
-		no argument means arg = . (actual dir)
-	------------------------------------------------------------------------------
-	check the flags 
-		-    => ls: -: No such file or directory
-		-989 => ls: illegal option -- j
-			usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]
-	------------------------------------------------------------------------------
-	get all args and store separetly the dirs and non-dirs list 
-		where to store it ? List_f List_dir
-	sort 2 lists 
-	display depending on flags
-	------------------------------------------------------------------------------
-
-firt try;
-//test lstat fullpath
-
-parse the flags
-
-sort argv  filename
-
-store all data in list of :
-
-typedef struct			s_file
-{
-	blkcnt_t			st_blocks;
-	mode_t				mode;
-	nlink_t				st_nlink;
-	uid_t				st_uid;
-	gid_t				st_gid;
-	off_t				size;
-	dev_t				st_rdev;
-	time_t				time;
-	long				ntime;
-	char				*name;
-	char				full_path[PATH_MAX];
-	struct s_file		*next;
-}						t_file;
-
-
-main
-
-check errno and fix it
+*************************DONEDONEDONEDONEDONE**************************************************
 
 parsing flags
 	parsing.c => initialize int flag
+
 sort argv
 	sort_tab
-	reverse_sort_tab
 
-go through the argv[i] 
-	addnewfile(t_file **begin) => add a file to the list
-		newfile(char *name, struct stat *stats) => initialize a new node
+dispatch the argv in t_list of files and t_list of dirs
 
-debug functions
+store data in t_file struct 
 
+display
+	diplay files
+	display dirs
+	display files and dir 
+	display with R flag 
+	display with a flag
 
-// int	ft_typeoffile(mode_t st_mode)
-// {
-//     if ((S_IFIFO & st_mode))
-//         return (1);
-// 	if ((S_IFCHR  & st_mode))
-//         return (1);
-// 	if ((S_IFDIR & st_mode))
-//         return (1);
-// 	if ((S_IFBLK  & st_mode))
-//         return (1);
-// 	if ((S_IFSOCK & st_mode))
-//         return (1);
-//     if ((S_IFREG & st_mode))
-//         return (2);
-//     if ((S_IFLNK & st_mode))
-//         return (3);
-//     return (0);
-// }
+*************************STILLSTILLSTILLSTILLSTILL**************************************************
+
+display
+	display with r flag
+		reverse sort
+	display with t flag
+		sort modified time (mtime)
+	display with l flag
+		display detailed data
