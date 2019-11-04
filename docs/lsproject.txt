@@ -34,9 +34,10 @@ ls
 management of columns without -l (man 4 tty)
 
 *************************DONEDONEDONEDONEDONE**************************************************
-
+ascascas
 parsing flags
 	parsing.c => initialize int flag
+	UNSET u U flags ; ??????????
 
 sort argv
 	sort_tab

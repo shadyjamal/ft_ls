@@ -20,6 +20,8 @@
 #define LS_r 4
 #define LS_upr 8
 #define LS_t 16
+#define LS_u 32
+#define LS_upu 64
 
 typedef struct		s_file
 {
@@ -33,6 +35,7 @@ typedef struct		s_file
 	off_t			st_size;
 	quad_t			st_blocks;
 	dev_t			st_rdev;
+	long			time_s;
 	struct s_file	*next;
 }					t_file;
 #endif
@@ -43,7 +46,7 @@ int		ft_sort_tab(char **tab, int size);
 
 void   ls_main(t_list *begin, int *flag);
 
-void    getdata(t_file **files, char *name, char *path);
+void    getdata(t_file **files, char *name, char *path, int *flag);
 t_file    *storedata(t_list *file, int *flag);
 
 //debug
@@ -58,3 +61,5 @@ void    print_error(char *content);
 void    dir_name(char *dirname);
 // free
 void	freelst(t_file **begin);
+
+void ft_sortlst(t_file **head, int *flag);

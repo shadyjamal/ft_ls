@@ -28,6 +28,7 @@ void printlstfile(t_file *begin)
         printf("mode = %d\n", begin->st_mode);
         printf("size = %lld\n", begin->st_size);
         printf("path = %s\n", begin->path);
+        printf("time = %ld sec\n", begin->time_s);
         begin = begin->next;
     }
 }

@@ -27,7 +27,7 @@ void    rec_display(t_file *list, int *flag)
     dir_name(list->path);
     op = opendir(list->path);
     while ((entry = readdir(op)))
-        getdata(&files, entry->d_name, ft_strjoin(list->path, "/"));
+        getdata(&files, entry->d_name, ft_strjoin(list->path, "/"), flag);
     closedir(op);
     ft_display(files, flag);
     freelst(&files);
@@ -51,6 +51,7 @@ void    ft_display(t_file *list, int *flag)
     // ((*flag & LS_r)) sort by reverse ascii
     // ((*flag & LS_t)) sort by last time modified
     // ((*flag & LS_t) && ((*flag & LS_r))) sort by reverse last time modified
+    ft_sortlst(&list, flag);
     ((*flag & LS_l)) ?  /*ft_long_display*/ ft_simple_display(list, flag) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
 }

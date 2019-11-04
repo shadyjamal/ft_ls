@@ -9,10 +9,11 @@ t_file    *storedata(t_list *file, int *flag)
     cur = file;
     while (cur)
     {
-        getdata(&list, cur->content, "");
+        getdata(&list, cur->content, "", flag);
         cur = cur->next; 
     }
     printf("FLAG = %d\n", *flag);
+    //printlstfile(list);
     return (list);
 }
 
@@ -26,13 +27,16 @@ void    ls_directories(t_list *dir, int *flag)
     
     listfiles = NULL;
     listdir = storedata(dir, flag);
+
+    ft_sortlst(&listdir, flag);
     cur = listdir;
     while (cur)
     {
         op = opendir(cur->name);
         while ((entry = readdir(op)))
-            getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"));
+            getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
         (void)closedir(op);
+        printlstfile(listfiles);
         dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
         ft_display(listfiles, flag);
         freelst(&listfiles); // free listfiles before using it in the next dir

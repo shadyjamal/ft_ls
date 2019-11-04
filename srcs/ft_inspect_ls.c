@@ -49,7 +49,7 @@
 //         printf("Proprietaire: %s\n",getpwuid(buf.st_uid)->pw_name);
 //         printf("Groupe: %s\n",getgrgid(buf.st_gid)->gr_name);
 //         printf("Taille: %lld octets\n",buf.st_size);
-//         printf("Date de derniere modification: %ld", buf.st_mtimespec.tv_sec);
+//         printf("Date de derniere modification: %ld", buf.st_mtimespec.tv_nsec);
 //     }
 //     return (0);
 // }

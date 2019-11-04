@@ -28,7 +28,7 @@ int    get_flags(int *flag, char *str)
     i = 0;
     while (str[++i])
     {
-        if ((n = get_index("alrRt",str[i])) == -1)
+        if ((n = get_index("alrRtuU",str[i])) == -1)
             return (-1);    // usage ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...] error function
         *flag |= (1 << n);   
     }
