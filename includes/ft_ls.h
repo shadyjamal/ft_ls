@@ -23,6 +23,17 @@
 #define LS_u 32
 #define LS_upu 64
 
+typedef struct		s_size
+{
+	int				s_usrname;
+	int				s_grname;
+	int				s_nlink;
+	int				s_size;
+	int				maj;
+	int				min;
+	int				total;
+}					t_size;
+
 typedef struct		s_file
 {
 	char			*name;
@@ -35,7 +46,8 @@ typedef struct		s_file
 	off_t			st_size;
 	quad_t			st_blocks;
 	dev_t			st_rdev;
-	long			time_s;
+	time_t			time_s;
+	long			time_ns;
 	struct s_file	*next;
 }					t_file;
 #endif
@@ -62,4 +74,6 @@ void    dir_name(char *dirname);
 // free
 void	freelst(t_file **begin);
 
+//sort
+void ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));
 void ft_sortlst(t_file **head, int *flag);

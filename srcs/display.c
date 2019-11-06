@@ -10,6 +10,30 @@ static void    ft_simple_display(t_file *list, int *flag)
     }
 }
 
+// void            ft_long_display(t_file *list, int *flag)
+// {
+//     t_file *cur;
+
+//     cur = list;
+
+//     ft_putstr("total ");
+// 	//print total xxx if dir
+// 	ft_putchar('\n');
+
+//     while (cur)
+//     {
+//         if (!(!(*flag & LS_a) && cur->name[0] == '.'))
+//              //print permissions
+//             ft_printperms(cur);
+//             //nb links
+//             //print username getpwuid
+//             //print grp getgruid
+//             //print size st_size / maj min
+//             //print date 
+//             //print colored name file 
+//     cur = cur->next;
+//     }
+// }
 void    dir_name(char *dirname)
 {
     write(1,"\n",1);
@@ -47,10 +71,6 @@ void    ft_recursivedisplay(t_file *list, int *flag)
 }
 void    ft_display(t_file *list, int *flag)
 {
-    //sort list of files depending on flag
-    // ((*flag & LS_r)) sort by reverse ascii
-    // ((*flag & LS_t)) sort by last time modified
-    // ((*flag & LS_t) && ((*flag & LS_r))) sort by reverse last time modified
     ft_sortlst(&list, flag);
     ((*flag & LS_l)) ?  /*ft_long_display*/ ft_simple_display(list, flag) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;

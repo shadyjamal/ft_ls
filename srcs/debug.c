@@ -22,13 +22,16 @@ void printlst(t_list *begin)
 
 void printlstfile(t_file *begin)
 {
+    struct stat buf;
+
     while (begin)
     {
+        stat(begin->path, &buf);
         printf("Name tfile = %s\n", begin->name);
         printf("mode = %d\n", begin->st_mode);
         printf("size = %lld\n", begin->st_size);
         printf("path = %s\n", begin->path);
-        printf("time = %ld sec\n", begin->time_s);
+        printf("mtime = %ld sec\n\n\n", buf.st_mtimespec.tv_nsec);
         begin = begin->next;
     }
 }

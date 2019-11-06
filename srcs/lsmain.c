@@ -12,8 +12,6 @@ t_file    *storedata(t_list *file, int *flag)
         getdata(&list, cur->content, "", flag);
         cur = cur->next; 
     }
-    printf("FLAG = %d\n", *flag);
-    //printlstfile(list);
     return (list);
 }
 
@@ -36,7 +34,6 @@ void    ls_directories(t_list *dir, int *flag)
         while ((entry = readdir(op)))
             getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
         (void)closedir(op);
-        printlstfile(listfiles);
         dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
         ft_display(listfiles, flag);
         freelst(&listfiles); // free listfiles before using it in the next dir
@@ -51,6 +48,7 @@ void        ls_files(t_list *file, int *flag)
     list = storedata(file, flag);
     ft_display(list, flag);
 }
+
 void        ls_main(t_list *begin, int *flag)
 {
     DIR     *dir;
