@@ -22,16 +22,17 @@
 #define LS_t 16
 #define LS_u 32
 #define LS_upu 64
+#define BUFFSIZE 1000
 
 typedef struct		s_size
 {
-	int				s_usrname;
-	int				s_grname;
-	int				s_nlink;
-	int				s_size;
-	int				maj;
-	int				min;
-	int				total;
+	int				susrname;
+	int				sgrname;
+	int				snlink;
+	int				ssize;
+	int				smaj;
+	int				smin;
+	int				stotal;
 }					t_size;
 
 typedef struct		s_file
@@ -50,30 +51,39 @@ typedef struct		s_file
 	long			time_ns;
 	struct s_file	*next;
 }					t_file;
+
+
 #endif
 
 void    parse_arg(int ac, char **av, int *flag, t_list **begin);
 
 int		ft_sort_tab(char **tab, int size);
 
-void   ls_main(t_list *begin, int *flag);
+void	ls_main(t_list *begin, int *flag);
 
-void    getdata(t_file **files, char *name, char *path, int *flag);
-t_file    *storedata(t_list *file, int *flag);
+void	getdata(t_file **files, char *name, char *path, int *flag);
+t_file	*storedata(t_list *file, int *flag);
 
 //debug
 
-void printtab(char **str, int size);
-void printlst(t_list *begin);
-void printlstfile(t_file *begin);
+void	printtab(char **str, int size);
+void	printlst(t_list *begin);
+void	printlstfile(t_file *begin);
+void	printsize(t_size *size);
 
 // display
 void    ft_display(t_file *list, int *flag);
 void    print_error(char *content);
 void    dir_name(char *dirname);
+void    ft_printperms(t_file *node);
+void	ft_print_int(int nb, int size);
+void	ft_print_str(char *str, int size);
 // free
 void	freelst(t_file **begin);
 
 //sort
-void ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));
-void ft_sortlst(t_file **head, int *flag);
+void 	ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));
+void	ft_sortlst(t_file **head, int *flag);
+
+// size
+t_size	ft_getsize(t_file *list);

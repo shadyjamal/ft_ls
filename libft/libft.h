@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/30 09:09:33 by cjamal            #+#    #+#             */
-/*   Updated: 2019/09/17 15:28:42 by cjamal           ###   ########.fr       */
+/*   Updated: 2019/11/06 14:59:08 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+size_t				ft_intlen(int nb);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 size_t				ft_strlen(const char *str);
@@ -94,6 +95,6 @@ int					ft_isspace(int c);
 int					ft_lissize(t_list *begin_list);
 int					ft_isblank(int c);
 int					get_next_line(const int fd, char **line);
-void	ft_lstpushback(t_list **blst, void const *content,
+void				ft_lstpushback(t_list **blst, void const *content,
 		size_t content_size);
 #endif

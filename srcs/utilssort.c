@@ -14,8 +14,7 @@ static int ft_timecmp(t_file *a, t_file *b)
     if (a->time_s > b->time_s)
         return (-1);
     if (a->time_s == b->time_s)
-        if (a->time_ns > b->time_ns)
-            return (-1);
+        return (ft_strcmp(a->name, b->name));
     return (1);
 }
 static int ft_revtimecmp(t_file *a, t_file *b)
@@ -23,8 +22,7 @@ static int ft_revtimecmp(t_file *a, t_file *b)
     if (a->time_s > b->time_s)
         return (1);
      if (a->time_s == b->time_s)
-        if (a->time_ns > b->time_ns)
-            return (1);
+        return (ft_strcmp(b->name, a->name));
     return (-1);
 }
 void ft_sortlst(t_file **head, int *flag)
@@ -35,6 +33,6 @@ void ft_sortlst(t_file **head, int *flag)
         ft_mergesortlst(head, &ft_strcmpnode);
     if ((*flag & LS_t) && (*flag & LS_r))
         ft_mergesortlst(head, &ft_revtimecmp);
-    else if ((*flag & LS_t))
+    else if ((*flag & LS_t)) // verify -u
         ft_mergesortlst(head, &ft_timecmp);
 }

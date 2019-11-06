@@ -28,7 +28,8 @@ t_file      *newnode(char *name, char *path, int *flag)
         return (0); // malloc error
     if (!(node->path = ft_strjoin(path, name)))
         return (0);
-    lstat(node->path, &buf); // check error & errno
+    if (lstat(node->path, &buf) == -1)
+        return (0); // check error & errno
     node->st_blocks = buf.st_blocks;
     node->st_gid = buf.st_gid;
     node->st_mode = buf.st_mode;

@@ -10,30 +10,36 @@ static void    ft_simple_display(t_file *list, int *flag)
     }
 }
 
-// void            ft_long_display(t_file *list, int *flag)
-// {
-//     t_file *cur;
+void            ft_long_display(t_file *list, int *flag)
+{
+    t_size  size;
+    
+	//print total xxx if dir
+    ft_putstr("total ");
+    ft_putchar('\n');
+    size = ft_getsize(list);
+    while (list)
+    {
+        if (!(!(*flag & LS_a) && list->name[0] == '.'))
+            {
+                //print permissions
+                ft_printperms(list);
+                //nb links
+                ft_print_int(list->st_nlink, size.snlink);
+                //print username getpwuid
+                ft_print_str(getpwuid(list->st_uid)->pw_name, size.susrname);
+                //print grp getgruid
+                ft_print_str(getgrgid(list->st_gid)->gr_name, size.sgrname);
+                //print size st_size / maj min
+                ft_print_int(list->st_size, size.ssize);
+                //print date 
+                //print colored name file
+                ft_putendl(list->name);
+            } 
+    list = list->next;
+    }
+}
 
-//     cur = list;
-
-//     ft_putstr("total ");
-// 	//print total xxx if dir
-// 	ft_putchar('\n');
-
-//     while (cur)
-//     {
-//         if (!(!(*flag & LS_a) && cur->name[0] == '.'))
-//              //print permissions
-//             ft_printperms(cur);
-//             //nb links
-//             //print username getpwuid
-//             //print grp getgruid
-//             //print size st_size / maj min
-//             //print date 
-//             //print colored name file 
-//     cur = cur->next;
-//     }
-// }
 void    dir_name(char *dirname)
 {
     write(1,"\n",1);
@@ -49,18 +55,22 @@ void    rec_display(t_file *list, int *flag)
 
     files = NULL;
     dir_name(list->path);
-    op = opendir(list->path);
-    while ((entry = readdir(op)))
-        getdata(&files, entry->d_name, ft_strjoin(list->path, "/"), flag);
-    closedir(op);
-    ft_display(files, flag);
-    freelst(&files);
+    if ((op = opendir(list->path)))
+    {
+        while ((entry = readdir(op)))
+            getdata(&files, entry->d_name, ft_strjoin(list->path, "/"), flag);
+        closedir(op);
+        if (files)
+        {
+            ft_display(files, flag);
+            freelst(&files);
+        }
+    }
 }
 void    ft_recursivedisplay(t_file *list, int *flag) 
 {
     t_file  *cur;
 
-    //printlstfile(list);
     cur = list;
     while (cur)
     {
@@ -72,6 +82,6 @@ void    ft_recursivedisplay(t_file *list, int *flag)
 void    ft_display(t_file *list, int *flag)
 {
     ft_sortlst(&list, flag);
-    ((*flag & LS_l)) ?  /*ft_long_display*/ ft_simple_display(list, flag) : ft_simple_display(list, flag);
+    ((*flag & LS_l)) ?  ft_long_display(list, flag) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
 }

@@ -30,13 +30,18 @@ void    ls_directories(t_list *dir, int *flag)
     cur = listdir;
     while (cur)
     {
-        op = opendir(cur->name);
-        while ((entry = readdir(op)))
-            getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
-        (void)closedir(op);
-        dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
-        ft_display(listfiles, flag);
-        freelst(&listfiles); // free listfiles before using it in the next dir
+        if ((op = opendir(cur->name))) // check errno
+        {
+            while ((entry = readdir(op)))
+                getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
+            (void)closedir(op);
+            dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
+            if (listfiles)
+            {
+                ft_display(listfiles, flag);
+                freelst(&listfiles); // free listfiles before using it in the next dir
+            }
+        } 
         cur = cur->next;
     }
 }

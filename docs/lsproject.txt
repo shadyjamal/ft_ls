@@ -56,9 +56,14 @@ display
 *************************STILLSTILLSTILLSTILLSTILL**************************************************
 
 display
-	display with r flag
-		reverse sort
-	display with t flag
-		sort modified time (mtime)
 	display with l flag
 		display detailed data
+			display date
+			color for name
+			links ->
+			major 
+			minor
+check errors
+	set errno and check it with perror
+check leaks
+check norminette

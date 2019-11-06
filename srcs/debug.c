@@ -35,3 +35,11 @@ void printlstfile(t_file *begin)
         begin = begin->next;
     }
 }
+void printsize(t_size *size)
+{
+    printf("Size of lnk = %d\n", size->snlink);
+    printf("Size of username = %d\n", size->susrname);
+    printf("Size of grname = %d\n", size->sgrname);
+    printf("Size of size = %d\n", size->ssize);
+    //printf("Size of lnk = %d", size->snlink);
+}
