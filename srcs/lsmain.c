@@ -2,15 +2,13 @@
 
 t_file    *storedata(t_list *file, int *flag)
 {
-    t_list  *cur;
     t_file  *list;
 
     list = NULL;
-    cur = file;
-    while (cur)
+    while (file)
     {
-        getdata(&list, cur->content, "", flag);
-        cur = cur->next; 
+        getdata(&list, file->content, "", flag);
+        file = file->next; 
     }
     return (list);
 }
@@ -25,15 +23,15 @@ void    ls_directories(t_list *dir, int *flag)
     
     listfiles = NULL;
     listdir = storedata(dir, flag);
-
     ft_sortlst(&listdir, flag);
     cur = listdir;
     while (cur)
     {
-        if ((op = opendir(cur->name))) // check errno
+        if ((op = opendir(cur->name))) // check errno 2
         {
             while ((entry = readdir(op)))
-                getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
+                if (!(!(*flag & LS_a) && entry->d_name[0] == '.'))
+                    getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
             (void)closedir(op);
             dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
             if (listfiles)

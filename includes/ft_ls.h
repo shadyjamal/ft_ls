@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <sys/errno.h>
+#include <time.h>
 #include "../libft/libft.h"
 
 # define C_NONE         "\033[0m"
@@ -88,6 +89,9 @@ void    dir_name(char *dirname);
 void    ft_printperms(t_file *node);
 void	ft_print_int(int nb, int size);
 void	ft_print_str(char *str, int size);
+void	ft_print_majmin(t_file *file, t_size size);
+void	print_date(time_t date);
+
 // free
 void	freelst(t_file **begin);
 
@@ -96,4 +100,4 @@ void 	ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));
 void	ft_sortlst(t_file **head, int *flag);
 
 // size
-t_size	ft_getsize(t_file *list);
+t_size	ft_getsize(t_file *list, int *blocks);

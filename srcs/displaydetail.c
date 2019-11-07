@@ -21,6 +21,23 @@ void	ft_printperms(t_file *node)
 	ft_putstr("  ");
 }
 
+void	ft_print_majmin(t_file *file, t_size size)
+{
+	int		min;
+	int		maj;
+
+	min = (int)ft_intlen(minor(file->st_rdev));
+	maj = (int)ft_intlen(major(file->st_rdev));
+	while (maj < size.smaj--)
+		ft_putchar(' ');
+	ft_putnbr(major(file->st_rdev));
+	ft_putstr(", ");
+	while (min < size.smin--)
+		ft_putchar(' ');
+	ft_putnbr(minor(file->st_rdev));
+	ft_putchar(' ');
+}
+
 void	ft_print_int(int nb, int size)
 {
 	int sp;
@@ -41,4 +58,29 @@ void	ft_print_str(char *str, int size)
 	while (sp--)
 		ft_putchar(' ');
 	ft_putstr("  ");
+}
+void	print_date(time_t date)
+{
+	char	*str_date;
+	char	*tmp;
+	char	*year;
+	time_t	actualtime;
+
+	str_date = ft_strnew(13);
+	tmp = ctime(&date) + 4;
+	actualtime = time(0);
+	if ((actualtime - 15778463) > date || actualtime < date)
+	{
+		year = ft_strsub(tmp, 16, 4); // year
+		str_date = ft_strncat(str_date, tmp, 6);
+		str_date = ft_strcat(str_date, "  ");
+		str_date = ft_strcat(str_date, year);
+		free(year);
+		free(tmp);
+	}
+	else
+		str_date = ft_strncat(str_date, tmp, 12);
+	ft_putstr(str_date);
+	ft_putchar(' ');
+	free(str_date);
 }

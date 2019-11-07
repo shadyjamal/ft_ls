@@ -31,6 +31,7 @@ ls
 -G colors view
 -u
 -g
+-
 management of columns without -l (man 4 tty)
 
 *************************DONEDONEDONEDONEDONE**************************************************
@@ -55,15 +56,20 @@ display
 
 *************************STILLSTILLSTILLSTILLSTILL**************************************************
 
+
 display
 	display with l flag
 		display detailed data
 			display date
-			color for name
+			//color for name
 			links ->
-			major 
-			minor
+			//major 
+			//minor
 check errors
 	set errno and check it with perror
 check leaks
 check norminette
+
+display dir name only if multi dir
+dont display the . dir
+
