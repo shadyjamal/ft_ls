@@ -15,14 +15,24 @@
 #include <sys/errno.h>
 #include "../libft/libft.h"
 
-#define LS_a 1
-#define LS_l 2
-#define LS_r 4
-#define LS_upr 8
-#define LS_t 16
-#define LS_u 32
-#define LS_upu 64
-#define BUFFSIZE 1000
+# define C_NONE         "\033[0m"
+# define C_BOLD         "\033[1m"
+# define C_BLACK        "\033[30m"
+# define C_RED          "\033[31m"
+# define C_GREEN        "\033[32m"
+# define C_BROWN        "\033[33m"
+# define C_BLUE         "\033[34m"
+# define C_MAGENTA      "\033[35m"
+# define C_CYAN         "\033[36m"
+# define C_GRAY         "\033[37m"
+# define LS_a 1
+# define LS_l 2
+# define LS_r 4
+# define LS_upr 8
+# define LS_t 16
+# define LS_u 32
+# define LS_upu 64
+# define BUFFSIZE 1000
 
 typedef struct		s_size
 {

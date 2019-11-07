@@ -10,6 +10,17 @@ static void    ft_simple_display(t_file *list, int *flag)
     }
 }
 
+void	ft_color(mode_t mode)
+{
+	S_ISBLK(mode) ? ft_putstr(C_RED) : NULL;
+	S_ISCHR(mode) ? ft_putstr(C_BLUE) : NULL;
+	S_ISDIR(mode) ? ft_putstr(C_CYAN) : NULL;
+	S_ISFIFO(mode) ? ft_putstr(C_BROWN) : NULL;
+	S_ISREG(mode) ? ft_putstr(C_NONE) : NULL;
+	S_ISLNK(mode) ? ft_putstr(C_GREEN) : NULL;
+	S_ISSOCK(mode) ? ft_putstr(C_MAGENTA) : NULL;
+}
+
 void            ft_long_display(t_file *list, int *flag)
 {
     t_size  size;
@@ -35,6 +46,7 @@ void            ft_long_display(t_file *list, int *flag)
                 //print date 
                 //print colored name file
                 ft_putendl(list->name);
+                ft_putstr(C_NONE);
             } 
     list = list->next;
     }
