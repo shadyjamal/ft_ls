@@ -29,7 +29,10 @@ int    get_flags(int *flag, char *str)
     while (str[++i])
     {
         if ((n = get_index("alrRtuU",str[i])) == -1)
+        {
+            print_error(str + i, USAGE);
             return (-1);    // usage ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...] error function
+        }
         *flag |= (1 << n);   
     }
     return (1);

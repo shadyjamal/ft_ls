@@ -13,70 +13,70 @@ t_file    *storedata(t_list *file, int *flag)
     return (list);
 }
 
-void    ls_directories(t_list *dir, int *flag)
+void    ls_directories(t_list *dir, int *flag, int multidir, _Bool first)
 {
     t_file          *listdir;
     t_file          *cur;
     t_file          *listfiles;    
     DIR             *op;
     struct dirent   *entry;
-    
+
     listfiles = NULL;
     listdir = storedata(dir, flag);
     ft_sortlst(&listdir, flag);
     cur = listdir;
     while (cur)
     {
-        if ((op = opendir(cur->name))) // check errno 2
+        multidir ? dir_name(cur->name, first) : 0;
+        first = 0;
+        if ((op = opendir(cur->name)))
         {
             while ((entry = readdir(op)))
                 if (!(!(*flag & LS_a) && entry->d_name[0] == '.'))
-                    getdata(&listfiles, entry->d_name, ft_strjoin(cur->path, "/"), flag);
+                    getdata(&listfiles, entry->d_name, (!ft_strchr(cur->path, '/') ? ft_strjoin(cur->path, "/") : cur->path), flag);
             (void)closedir(op);
-            dir_name(cur->name); // display dirname only if "> 1" of (dirs) or (dirs + files) 
             if (listfiles)
             {
-                ft_display(listfiles, flag);
+                ft_display(listfiles, flag, 1);
                 freelst(&listfiles); // free listfiles before using it in the next dir
             }
-        } 
+        }
+        else
+            print_error(cur->name, ERRNO);
         cur = cur->next;
     }
 }
 
-void        ls_files(t_list *file, int *flag)
+void        ls_files(t_list *file, int *flag, _Bool *first)
 {
     t_file  *list;
 
     list = storedata(file, flag);
-    ft_display(list, flag);
+    ft_display(list, flag, 0);
+    *first = 0;
 }
 
-void        ls_main(t_list *begin, int *flag)
+void        ls_main(t_list *begin, int *flag, int multidir)
 {
-    DIR     *dir;
+    struct stat buf;
     t_list  *files;
     t_list  *directory;
-    t_list  *cur;
+    _Bool   first;
 
+    first = 1;
     files = NULL;
     directory = NULL;
-    cur = begin;
-    while (cur)
+    while (begin)
     {
-        if (!(dir = opendir(cur->content)))
-            errno == ENOTDIR ? ft_lstpushback(&files, cur->content, cur->content_size) : \
-                             print_error(cur->content);/// error errno 2
+        if (stat(begin->content, &buf) == -1)
+            print_error(begin->content, ERRNO);
+        else if (S_ISDIR(buf.st_mode))
+            ft_lstpushback(&directory, begin->content, begin->content_size);
         else
-        {
-            ft_lstpushback(&directory, cur->content, cur->content_size);
-            if (closedir(dir) == -1)
-                printf("close error"); // close dir error // errno
-        }
-        cur = cur->next;
+            ft_lstpushback(&files, begin->content, begin->content_size);
+        begin = begin->next;
     }
-    if (files)
-        ls_files(files, flag);
-    if (directory)
-        ls_directories(directory, flag);
+    files ? ls_files(files, flag, &first) : NULL;
+    directory ? ls_directories(directory, flag, multidir, first) : NULL;
+    //free list
 }    

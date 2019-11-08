@@ -21,16 +21,20 @@ void	ft_color(mode_t mode)
 	S_ISSOCK(mode) ? ft_putstr(C_MAGENTA) : NULL;
 }
 
-void            ft_long_display(t_file *list, int *flag)
+void            ft_long_display(t_file *list, int *flag, _Bool fileordir)
 {
     t_size  size;
     int     blocks;
     
+    (void)*flag;    
     blocks = 0;
     size = ft_getsize(list, &blocks);
-    ft_putstr("total ");
-    ft_putnbr(blocks);
-    ft_putchar('\n');
+    if (fileordir)
+    {
+        ft_putstr("total ");
+        ft_putnbr(blocks);
+        ft_putchar('\n');
+    }
     while (list)
     {
         //print permissions
@@ -54,14 +58,14 @@ void            ft_long_display(t_file *list, int *flag)
         ft_putstr(C_NONE);
         list = list->next;
     }
-    ft_putnbr(*flag);
 }
 
-void    dir_name(char *dirname)
+void    dir_name(char *dirname, _Bool first)
 {
-    write(1,"\n",1);
+    if (!first)
+        write(1,"\n",1);
     ft_putstr(dirname);
-    write(1,":\n",2);      
+    write(1,":\n",2);  
 }
 
 void    rec_display(t_file *list, int *flag)
@@ -71,7 +75,7 @@ void    rec_display(t_file *list, int *flag)
     struct dirent   *entry;
 
     files = NULL;
-    dir_name(list->path);
+    dir_name(list->path, 0);
     if ((op = opendir(list->path)))
     {
         while ((entry = readdir(op)))
@@ -80,10 +84,12 @@ void    rec_display(t_file *list, int *flag)
         closedir(op);
         if (files)
         {
-            ft_display(files, flag);
+            ft_display(files, flag, 1);
             freelst(&files);
         }
     }
+    else
+        print_error(list->name, ERRNO);
 }
 void    ft_recursivedisplay(t_file *list, int *flag) 
 {
@@ -97,9 +103,9 @@ void    ft_recursivedisplay(t_file *list, int *flag)
         cur = cur->next;
     }
 }
-void    ft_display(t_file *list, int *flag)
+void    ft_display(t_file *list, int *flag, _Bool fileordir)
 {
     ft_sortlst(&list, flag);
-    ((*flag & LS_l)) ?  ft_long_display(list, flag) : ft_simple_display(list, flag);
+    ((*flag & LS_l)) ?  ft_long_display(list, flag, fileordir) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
 }

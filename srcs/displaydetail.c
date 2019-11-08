@@ -76,7 +76,6 @@ void	print_date(time_t date)
 		str_date = ft_strcat(str_date, "  ");
 		str_date = ft_strcat(str_date, year);
 		free(year);
-		free(tmp);
 	}
 	else
 		str_date = ft_strncat(str_date, tmp, 12);

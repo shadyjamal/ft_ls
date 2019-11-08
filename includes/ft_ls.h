@@ -26,6 +26,7 @@
 # define C_MAGENTA      "\033[35m"
 # define C_CYAN         "\033[36m"
 # define C_GRAY         "\033[37m"
+
 # define LS_a 1
 # define LS_l 2
 # define LS_r 4
@@ -33,7 +34,10 @@
 # define LS_t 16
 # define LS_u 32
 # define LS_upu 64
+
 # define BUFFSIZE 1000
+
+enum {ERRNO, USAGE, MALERROR};
 
 typedef struct		s_size
 {
@@ -70,7 +74,7 @@ void    parse_arg(int ac, char **av, int *flag, t_list **begin);
 
 int		ft_sort_tab(char **tab, int size);
 
-void	ls_main(t_list *begin, int *flag);
+void	ls_main(t_list *begin, int *flag, int multidir);
 
 void	getdata(t_file **files, char *name, char *path, int *flag);
 t_file	*storedata(t_list *file, int *flag);
@@ -83,9 +87,9 @@ void	printlstfile(t_file *begin);
 void	printsize(t_size *size);
 
 // display
-void    ft_display(t_file *list, int *flag);
-void    print_error(char *content);
-void    dir_name(char *dirname);
+void    ft_display(t_file *list, int *flag, _Bool fileordir);
+void    print_error(char *content, int error);
+void    dir_name(char *dirname, _Bool first);
 void    ft_printperms(t_file *node);
 void	ft_print_int(int nb, int size);
 void	ft_print_str(char *str, int size);

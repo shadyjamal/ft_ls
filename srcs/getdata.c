@@ -25,7 +25,7 @@ t_file      *newnode(char *name, char *path, int *flag)
     struct stat buf;
 
     if (!(node = (t_file*)malloc(sizeof(t_file))) || !(node->name = ft_strdup(name)))
-        return (0); // malloc error
+        return (0);
     if (!(node->path = ft_strjoin(path, name)))
         return (0);
     if (lstat(node->path, &buf) == -1)
@@ -47,13 +47,20 @@ void    getdata(t_file **files, char *name, char *path, int *flag)
     t_file  *list;
 
     list = *files;
-
     if (list)
     {
         while (list->next)
             list = list->next;
-        list->next = newnode(name, path, flag);
+        if (!(list->next = newnode(name, path, flag)) && errno == ENOMEM)
+        {
+            freelst(files);
+            print_error(name, MALERROR);
+        }
     }
     else
-        *files = newnode(name, path, flag);
+        if (!(*files = newnode(name, path, flag)) && errno == ENOMEM)
+        {
+            freelst(files);
+            print_error(name, MALERROR);
+        }
 }
