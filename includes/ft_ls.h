@@ -16,16 +16,18 @@
 #include <time.h>
 #include "../libft/libft.h"
 
-# define C_NONE         "\033[0m"
-# define C_BOLD         "\033[1m"
+# define C_RESET         "\033[0m"
 # define C_BLACK        "\033[30m"
 # define C_RED          "\033[31m"
-# define C_GREEN        "\033[32m"
+# define C_PURPLE        "\033[95m"
 # define C_BROWN        "\033[33m"
 # define C_BLUE         "\033[34m"
-# define C_MAGENTA      "\033[35m"
-# define C_CYAN         "\033[36m"
+# define C_GREEN      "\033[32m"
+# define C_CYAN         "\033[1;36m"
 # define C_GRAY         "\033[37m"
+# define B_YELLOW		"\033[30;43m"
+# define B_YELLOWB		"\033[34;103m"
+# define B_CYAN			"\033[34;46m"
 
 # define LS_a 1
 # define LS_l 2
@@ -34,8 +36,9 @@
 # define LS_t 16
 # define LS_u 32
 # define LS_upu 64
+# define LS_upg 128
 
-# define BUFFSIZE 1000
+# define BUFSIZE 1000	
 
 enum {ERRNO, USAGE, MALERROR};
 
@@ -95,6 +98,7 @@ void	ft_print_int(int nb, int size);
 void	ft_print_str(char *str, int size);
 void	ft_print_majmin(t_file *file, t_size size);
 void	print_date(time_t date);
+void	ft_getperms(char perm[11], int mode);
 
 // free
 void	freelst(t_file **begin);

@@ -58,11 +58,29 @@ display
 
 
 display
-		//color for name
-		links ->
+
+//color for name	OK
+
+links ->			ok
+
+S T s t				ok
+
+ls -lR //			ok
+
+ls -R /dev/fd		ok
+
+ENAMETOOLONG		ok
+
+size.maj			ok
+
+ls lien				ok
+
+ls					ok
+
+-Uu / -uU			OK
+
+ft_write
 
 check leaks
 check norminette
-
-S T s t
-
+************************************************************************

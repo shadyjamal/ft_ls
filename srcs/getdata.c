@@ -24,6 +24,11 @@ t_file      *newnode(char *name, char *path, int *flag)
     t_file      *node;
     struct stat buf;
 
+    if (ft_strlen(name) > NAME_MAX)
+    {
+        print_error(name, 0);
+        return (0);
+    }
     if (!(node = (t_file*)malloc(sizeof(t_file))) || !(node->name = ft_strdup(name)))
         return (0);
     if (!(node->path = ft_strjoin(path, name)))

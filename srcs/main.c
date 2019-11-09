@@ -6,12 +6,14 @@ int main(int ac, char **av)
     int multidir;
     t_list *begin;
 
-    multidir = 1;
+    multidir = 0;
     begin = NULL;
     parse_arg(ac, av, &flag, &begin);
-    //printf("Flag => %d\n", flag);
-    //printlst(begin); // debug
-    !begin->next ? (multidir = 0) : 0 ; 
+    if (begin)
+        begin->next ? (multidir = 1) : 0;
+    else
+        ft_lstpushback(&begin, ".", 2);
     ls_main(begin, &flag, multidir);
+    ft_lstdel(&begin, &ft_bzero);
 	return (0);
 }

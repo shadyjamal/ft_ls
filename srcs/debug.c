@@ -41,5 +41,7 @@ void printsize(t_size *size)
     printf("Size of username = %d\n", size->susrname);
     printf("Size of grname = %d\n", size->sgrname);
     printf("Size of size = %d\n", size->ssize);
+    printf("Size of smaj = %d\n", size->smaj);
+    printf("Size of smin = %d\n", size->smin);
     //printf("Size of lnk = %d", size->snlink);
 }

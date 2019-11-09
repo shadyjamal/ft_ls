@@ -28,6 +28,7 @@ t_size    ft_getsize(t_file *list, int *blocks)
         *blocks += list->st_blocks;
         list = list->next;
     }
+    size.smaj += ((tmp = size.ssize - size.smaj - size.smin - 2) > 0 ? tmp : 0);
     //printsize(&size);
     return (size);
 } 

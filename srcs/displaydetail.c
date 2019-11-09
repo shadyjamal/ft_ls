@@ -20,7 +20,7 @@ static char		file_type(int mode)
 	else
 		return ('-');
 }
-void	ft_printperms(char perm[11], int mode)
+void	ft_getperms(char perm[11], int mode)
 {
     perm[0] = file_type(mode);
 	perm[1] = (S_IRUSR & mode) ? 'r' : '-';
@@ -39,8 +39,6 @@ void	ft_printperms(char perm[11], int mode)
 		perm[6] = perm[6] == '-' ? 'S' : 's';
 	if (S_ISVTX & mode)
 		perm[9] = perm[9] == '-' ? 'T' : 't';
-	ft_putstr(perm);
-	write(1, "  ", 2);
 }
 
 void	ft_print_majmin(t_file *file, t_size size)

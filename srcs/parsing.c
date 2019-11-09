@@ -28,11 +28,12 @@ int    get_flags(int *flag, char *str)
     i = 0;
     while (str[++i])
     {
-        if ((n = get_index("alrRtuU",str[i])) == -1)
-        {
+        if ((n = get_index("alrRtuUG",str[i])) == -1)
             print_error(str + i, USAGE);
-            return (-1);    // usage ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...] error function
-        }
+        if (n == 5 && (*flag & LS_upu))
+            *flag &= ~LS_upu;
+        if (n == 6 && (*flag & LS_u))
+            *flag &= ~LS_u;
         *flag |= (1 << n);   
     }
     return (1);
@@ -59,5 +60,4 @@ void    parse_arg(int ac, char **av, int *flag, t_list **begin)
     ft_sort_tab((av += i), (ac -= i));
     while (av[++j])
             ft_lstpushback(begin, av[j], strlen(av[j]) + 1);
-    //printlst(*begin); // debug
 }
