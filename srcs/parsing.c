@@ -59,5 +59,5 @@ void    parse_arg(int ac, char **av, int *flag, t_list **begin)
     }
     ft_sort_tab((av += i), (ac -= i));
     while (av[++j])
-            ft_lstpushback(begin, av[j], strlen(av[j]) + 1);
+            ft_lstpushback(begin, av[j], ft_strlen(av[j]) + 1);
 }

@@ -130,5 +130,4 @@ void    ft_display(t_file *list, int *flag, _Bool fileordir)
     ft_sortlst(&list, flag);
     ((*flag & LS_l)) ?  ft_long_display(list, flag, fileordir) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
-    
 }

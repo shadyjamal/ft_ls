@@ -13,6 +13,7 @@ void	freelst(t_file **begin)
 	while (cur)
 	{
 		freenode(cur);
+		free(cur);
 		cur = cur->next;
 	}
 	*begin = NULL;
