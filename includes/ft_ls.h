@@ -90,7 +90,7 @@ void	printsize(t_size *size);
 void    ft_display(t_file *list, int *flag, _Bool fileordir);
 void    print_error(char *content, int error);
 void    dir_name(char *dirname, _Bool first);
-void    ft_printperms(t_file *node);
+void	ft_printperms(char perm[11], int mode);
 void	ft_print_int(int nb, int size);
 void	ft_print_str(char *str, int size);
 void	ft_print_majmin(t_file *file, t_size size);

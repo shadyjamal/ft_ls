@@ -25,6 +25,7 @@ void            ft_long_display(t_file *list, int *flag, _Bool fileordir)
 {
     t_size  size;
     int     blocks;
+    char    perm[11];
     
     (void)*flag;    
     blocks = 0;
@@ -38,7 +39,7 @@ void            ft_long_display(t_file *list, int *flag, _Bool fileordir)
     while (list)
     {
         //print permissions
-        ft_printperms(list);
+        ft_printperms(perm, list->st_mode);
         //nb links
         ft_print_int(list->st_nlink, size.snlink);
         //print username getpwuid

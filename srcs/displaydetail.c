@@ -1,24 +1,46 @@
 #include "ft_ls.h"
 
-void	ft_printperms(t_file *node)
+static char		file_type(int mode)
 {
-    ft_putchar(S_ISFIFO(node->st_mode) ? 'p' : '\0');
-    ft_putchar((S_ISCHR(node->st_mode)) ? 'c' : '\0');
-    ft_putchar(S_ISLNK(node->st_mode) ? 'l' : '\0');
-    ft_putchar(S_ISREG(node->st_mode) ? '-' : '\0');
-    ft_putchar(S_ISDIR(node->st_mode) ? 'd' : '\0');
-    ft_putchar(S_ISSOCK(node->st_mode) ? 's' : '\0');
-    ft_putchar((S_ISBLK(node->st_mode)) ? 'b' : '\0');
-    ft_putchar((node->st_mode & S_IRUSR) ? 'r' : '-');
-	ft_putchar((node->st_mode & S_IWUSR) ? 'w' : '-');
-	ft_putchar((node->st_mode & S_IXUSR) ? 'x' : '-');
-	ft_putchar((node->st_mode & S_IRGRP) ? 'r' : '-');
-	ft_putchar((node->st_mode & S_IWGRP) ? 'w' : '-');
-	ft_putchar((node->st_mode & S_IXGRP) ? 'x' : '-');
-	ft_putchar((node->st_mode & S_IROTH) ? 'r' : '-');
-	ft_putchar((node->st_mode & S_IWOTH) ? 'w' : '-');
-	ft_putchar((node->st_mode & S_IXOTH) ? 'x' : '-');
-	ft_putstr("  ");
+	mode = (mode & S_IFMT);
+	if (S_ISREG(mode))
+		return ('-');
+	else if (S_ISDIR(mode))
+		return ('d');
+	else if (S_ISLNK(mode))
+		return ('l');
+	else if (S_ISBLK(mode))
+		return ('b');
+	else if (S_ISCHR(mode))
+		return ('c');
+	else if (S_ISSOCK(mode))
+		return ('s');
+	else if (S_ISFIFO(mode))
+		return ('p');
+	else
+		return ('-');
+}
+void	ft_printperms(char perm[11], int mode)
+{
+    perm[0] = file_type(mode);
+	perm[1] = (S_IRUSR & mode) ? 'r' : '-';
+	perm[2] = (S_IWUSR & mode) ? 'w' : '-';
+	perm[3] = (S_IXUSR & mode) ? 'x' : '-';
+	perm[4] = (S_IRGRP & mode) ? 'r' : '-';
+	perm[5] = (S_IWGRP & mode) ? 'w' : '-';
+	perm[6] = (S_IXGRP & mode) ? 'x' : '-';
+	perm[7] = (S_IROTH & mode) ? 'r' : '-';
+	perm[8] = (S_IWOTH & mode) ? 'w' : '-';
+	perm[9] = (S_IXOTH & mode) ? 'x' : '-';
+	perm[10] = '\0';
+	if (S_ISUID & mode)
+		perm[3] = perm[3] == '-' ? 'S' : 's';
+	if (S_ISGID & mode)
+		perm[6] = perm[6] == '-' ? 'S' : 's';
+	if (S_ISVTX & mode)
+		perm[9] = perm[9] == '-' ? 'T' : 't';
+	ft_putstr(perm);
+	write(1, "  ", 2);
 }
 
 void	ft_print_majmin(t_file *file, t_size size)
