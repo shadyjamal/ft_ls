@@ -33,6 +33,6 @@ void ft_sortlst(t_file **head, int *flag)
         ft_mergesortlst(head, &ft_strcmpnode);
     if ((*flag & LS_t) && (*flag & LS_r))
         ft_mergesortlst(head, &ft_revtimecmp);
-    else if ((*flag & LS_t)) // verify -u
+    else if ((*flag & LS_t))
         ft_mergesortlst(head, &ft_timecmp);
 }

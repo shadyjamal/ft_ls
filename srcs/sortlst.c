@@ -48,30 +48,32 @@ void splitlst(t_file* source, t_file** front, t_file** back)
 { 
     t_file* fast; 
     t_file* slow; 
+
     slow = source; 
     fast = source->next; 
-
-    while (fast != NULL) { 
+    while (fast != NULL)
+    { 
         fast = fast->next; 
-        if (fast != NULL) { 
+        if (fast != NULL) 
+        { 
             slow = slow->next; 
             fast = fast->next; 
         } 
     } 
-    *front = source; 
+    *front = source;
     *back = slow->next; 
     slow->next = NULL; 
 }
 
 void ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*)) 
 { 
-    t_file* head = *headRef; 
+    t_file* head; 
     t_file* a; 
     t_file* b; 
-  
-    if ((head == NULL) || (head->next == NULL)) { 
-        return; 
-    } 
+
+    head = *headRef;
+    if ((head == NULL) || (head->next == NULL))
+        return ; 
     splitlst(head, &a, &b); 
     ft_mergesortlst(&a , cmp); 
     ft_mergesortlst(&b, cmp); 

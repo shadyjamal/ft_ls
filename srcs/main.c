@@ -14,6 +14,6 @@ int main(int ac, char **av)
     else
         ft_lstpushback(&begin, ".", 2);
     ls_main(begin, &flag, multidir);
-    ft_lstdel(&begin, &ft_bzero);
-	return (0);
+    ft_lstdel(&begin, &freecontent);
+    return (0);
 }

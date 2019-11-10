@@ -21,7 +21,7 @@ static void    ft_simple_display(t_file *list, int *flag)
     while (list)
     {
         ft_getperms(perm, list->st_mode);
-        if (!(!(*flag & LS_a) && list->name[0] == '.'))
+        if (!(!(*flag & LS_a) && list->name[0] == '.' && !ft_strrchr(list->name, '/')))
         {
             (*flag & LS_upg) ? ft_color(perm) : NULL;
             ft_putendl(list->name);
@@ -41,7 +41,7 @@ void            ft_long_display(t_file *list, int *flag, _Bool fileordir)
     (void)*flag;    
     blocks = 0;
     size = ft_getsize(list, &blocks);
-    if (fileordir)
+    if (fileordir && list)
     {
         ft_putstr("total ");
         ft_putnbr(blocks);
@@ -104,11 +104,8 @@ void    rec_display(t_file *list, int *flag)
             if (!(!(*flag & LS_a) && entry->d_name[0] == '.'))
                 getdata(&files, entry->d_name, ft_strjoin(list->path, "/"), flag);
         closedir(op);
-        if (files)
-        {
-            ft_display(files, flag, 1);
-            freelst(&files);
-        }
+        ft_display(files, flag, 1);
+        freelst(&files);
     }
     else
         print_error(list->name, ERRNO);
@@ -127,7 +124,6 @@ void    ft_recursivedisplay(t_file *list, int *flag)
 }
 void    ft_display(t_file *list, int *flag, _Bool fileordir)
 {
-    ft_sortlst(&list, flag);
     ((*flag & LS_l)) ?  ft_long_display(list, flag, fileordir) : ft_simple_display(list, flag);
     ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
 }

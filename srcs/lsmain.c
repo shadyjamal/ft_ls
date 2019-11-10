@@ -7,7 +7,7 @@ t_file	*storedata(t_list *file, int *flag)
 	list = NULL;
 	while (file)
 	{
-		getdata(&list, file->content, "", flag);
+		getdata(&list, file->content, ft_strdup(""), flag);
 		file = file->next;
 	}
 	return (list);
@@ -33,14 +33,14 @@ void	ls_directories(t_list *dir, int *flag, int multidir, _Bool first)
 		{
 			while ((ent = readdir(op)))
 				if (!(!(*flag & LS_a) && ent->d_name[0] == '.'))
-					getdata(&lstfiles, ent->d_name, (ft_strcmp(cur->name, "/") ?
-					ft_strjoin(cur->path, "/") : cur->path), flag);
-			(void)closedir(op);
-			if (lstfiles)
-			{
-				ft_display(lstfiles, flag, 1);
-				freelst(&lstfiles);
-			}
+				{
+					getdata(&lstfiles, ent->d_name, ft_strjoin(cur->path, 
+					ft_strcmp(cur->name, "/") ? "/" : ""), flag);
+				}
+				(void)closedir(op);
+			ft_sortlst(&lstfiles, flag);
+			ft_display(lstfiles, flag, 1);
+			freelst(&lstfiles);
 		}
 		else
 			print_error(cur->name, ERRNO);
@@ -54,6 +54,7 @@ void	ls_files(t_list *file, int *flag, _Bool *first)
 	t_file			*list;
 
 	list = storedata(file, flag);
+	ft_sortlst(&list, flag);
 	ft_display(list, flag, 0);
 	freelst(&list);
 	*first = 0;
@@ -84,5 +85,5 @@ void	ls_main(t_list *begin, int *flag, int multidir)
 	files ? ls_files(files, flag, &first) : NULL;
 	directory ? ls_directories(directory, flag, multidir, first) : NULL;
 	files ? ft_lstdel(&files, &ft_bzero) : 0;
-	directory ? ft_lstdel(&directory, &ft_bzero) : 0;
+	directory ? ft_lstdel(&directory, &freecontent) : 0;
 }

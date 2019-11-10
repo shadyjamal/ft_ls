@@ -102,6 +102,7 @@ void	ft_getperms(char perm[11], int mode);
 
 // free
 void	freelst(t_file **begin);
+void	freecontent(void *content, size_t contentsize);
 
 //sort
 void 	ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));
