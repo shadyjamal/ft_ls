@@ -1,129 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/11 19:10:40 by cjamal            #+#    #+#             */
+/*   Updated: 2019/11/12 10:45:19 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-void	ft_color(char prm[11])
+void		ft_displayl(t_file *lst, char perm[11], t_size size, int *flag)
 {
-	(prm[0] == 'b') ? ft_putstr(B_CYAN) : NULL;
-	(prm[0] == 'c') ? ft_putstr(B_YELLOWB) : NULL;
-    if (prm[0] == 'd')
-        (prm[8] != 'w' ? ft_putstr(C_CYAN): ft_putstr(B_YELLOW));
-	(prm[0] == 'f')? ft_putstr(C_BROWN) : NULL;
-    if (prm[0] == '-')
-        (prm[3] != 'x' && prm[6] != 'x' && prm[9] != 'x' ? 
-        ft_putstr(C_RESET) : ft_putstr(C_RED));
-    (prm[0] == 'l') ? ft_putstr(C_PURPLE) : NULL;
-	(prm[0] == 's') ? ft_putstr(C_GREEN) : NULL;
+	ft_getperms(perm, lst->st_mode);
+	ft_putstr(perm);
+	write(1, "  ", 2);
+	ft_print_int(lst->st_nlink, size.snlink);
+	ft_print_str(getpwuid(lst->st_uid)->pw_name, size.susrname);
+	ft_print_str(getgrgid(lst->st_gid)->gr_name, size.sgrname);
+	if (perm[0] != 'c' && perm[0] != 'b')
+		ft_print_int(lst->st_size, size.ssize);
+	else
+		ft_print_majmin(lst, size);
+	print_date(lst->time_s);
+	(*flag & LS_upg) ? ft_color(perm) : NULL;
+	ft_putstr(lst->name);
+	(*flag & LS_upg) ? ft_putstr(C_RESET) : NULL;
 }
 
-static void    ft_simple_display(t_file *list, int *flag)
+static void	ft_long_display(t_file *list, int *flag, _Bool fileordir)
 {
-    char        perm[11];
+	t_size			size;
+	int				blocks;
+	char			perm[11];
+	char			buf[NAME_MAX];
 
-    while (list)
-    {
-        ft_getperms(perm, list->st_mode);
-        if (!(!(*flag & LS_a) && list->name[0] == '.' && !ft_strrchr(list->name, '/')))
-        {
-            (*flag & LS_upg) ? ft_color(perm) : NULL;
-            ft_putendl(list->name);
-            (*flag & LS_upg) ? ft_putstr(C_RESET) : NULL;;
-        }
-        list = list->next;        
-    }
+	blocks = 0;
+	size = ft_getsize(list, &blocks);
+	if (fileordir && list)
+	{
+		ft_putstr("total ");
+		ft_putnbr(blocks);
+		ft_putchar('\n');
+	}
+	while (list)
+	{
+		ft_displayl(list, perm, size, flag);
+		if (perm[0] == 'l')
+			display_lnk(list, buf);
+		write(1, "\n", 1);
+		list = list->next;
+	}
 }
 
-void            ft_long_display(t_file *list, int *flag, _Bool fileordir)
+static void	rec_display(t_file *list, int *flag)
 {
-    t_size      size;
-    int         blocks;
-    char        perm[11];
-    char        buf[NAME_MAX];
-    
-    (void)*flag;    
-    blocks = 0;
-    size = ft_getsize(list, &blocks);
-    if (fileordir && list)
-    {
-        ft_putstr("total ");
-        ft_putnbr(blocks);
-        ft_putchar('\n');
-    }
-    while (list)
-    {
-        //print permissions
-        ft_getperms(perm, list->st_mode);
-        ft_putstr(perm);
-	    write(1, "  ", 2);
-        //nb links
-        ft_print_int(list->st_nlink, size.snlink);
-        //print username getpwuid
-        ft_print_str(getpwuid(list->st_uid)->pw_name, size.susrname);
-        //print grp getgruid
-        ft_print_str(getgrgid(list->st_gid)->gr_name, size.sgrname);
-        //print size st_size / maj min
-        if (perm[0] != 'c' && perm[0] != 'b')
-            ft_print_int(list->st_size, size.ssize);
-        else 
-            ft_print_majmin(list, size);
-        //print date
-        print_date(list->time_s);
-        //print colored name file // link ->
-        (*flag & LS_upg) ? ft_color(perm) : NULL;
-        ft_putstr(list->name);
-        (*flag & LS_upg) ? ft_putstr(C_RESET) : NULL;;
-        if (perm[0] == 'l')
-        {
-            ft_bzero(buf, NAME_MAX);
-            readlink(list->path, buf, NAME_MAX);
-            write(1, " -> ", 4);
-            ft_putstr(buf);
-        }
-        write(1, "\n", 1);
-        list = list->next;
-    }
+	DIR				*op;
+	t_file			*files;
+	struct dirent	*en;
+
+	files = NULL;
+	entry = NULL;
+	op = NULL;
+	dir_name(list->path, 0);
+	if ((op = opendir(list->path)))
+	{
+		while ((entry = readdir(op)))
+			if (!(!(*flag & LS_a) && entry->d_name[0] == '.'))
+				getdata(&files, en->d_name, ft_strjoin(list->path, "/"), flag);
+		op ? closedir(op) : 0;
+		do_lsdir(files, flag);
+	}
+	else
+		print_error(list->name, ERRNO);
 }
 
-void    dir_name(char *dirname, _Bool first)
+static void	ft_recursivedisplay(t_file *list, int *flag)
 {
-    if (!first)
-        write(1,"\n",1);
-    ft_putstr(dirname);
-    write(1,":\n",2);  
+	t_file			*cur;
+
+	cur = list;
+	while (cur)
+	{
+		if (S_ISDIR(cur->st_mode) &&
+				ft_strcmp(".", cur->name) && ft_strcmp("..", cur->name))
+			rec_display(cur, flag);
+		cur = cur->next;
+	}
 }
 
-void    rec_display(t_file *list, int *flag)
+void		ft_display(t_file *list, int *flag, _Bool fileordir)
 {
-    DIR             *op;
-    t_file          *files;
-    struct dirent   *entry;
-
-    files = NULL;
-    dir_name(list->path, 0);
-    if ((op = opendir(list->path)))
-    {
-        while ((entry = readdir(op)))
-            if (!(!(*flag & LS_a) && entry->d_name[0] == '.'))
-                getdata(&files, entry->d_name, ft_strjoin(list->path, "/"), flag);
-        closedir(op);
-        ft_display(files, flag, 1);
-        freelst(&files);
-    }
-    else
-        print_error(list->name, ERRNO);
-}
-void    ft_recursivedisplay(t_file *list, int *flag) 
-{
-    t_file  *cur;
-
-    cur = list;
-    while (cur)
-    {
-        if (S_ISDIR(cur->st_mode) && ft_strcmp(".", cur->name) && ft_strcmp("..", cur->name))
-            rec_display(cur, flag);
-        cur = cur->next;
-    }
-}
-void    ft_display(t_file *list, int *flag, _Bool fileordir)
-{
-    ((*flag & LS_l)) ?  ft_long_display(list, flag, fileordir) : ft_simple_display(list, flag);
-    ((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
+	((*flag & LS_l)) ? ft_long_display(list, flag, fileordir) :
+									ft_simple_display(list, flag);
+	((*flag & LS_upr)) ? ft_recursivedisplay(list, flag) : NULL;
 }

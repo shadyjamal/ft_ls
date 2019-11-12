@@ -55,8 +55,6 @@ typedef struct		s_size
 
 typedef struct		s_file
 {
-	char			*name;
-	char			*path;
 	time_t			date;
 	mode_t			st_mode;
 	nlink_t			st_nlink;
@@ -64,9 +62,11 @@ typedef struct		s_file
 	gid_t			st_gid;
 	off_t			st_size;
 	quad_t			st_blocks;
-	dev_t			st_rdev;
+	dev_t			st_dev;
 	time_t			time_s;
 	long			time_ns;
+	char			*name;
+	char			*path;
 	struct s_file	*next;
 }					t_file;
 
@@ -74,35 +74,28 @@ typedef struct		s_file
 #endif
 
 void    parse_arg(int ac, char **av, int *flag, t_list **begin);
-
 int		ft_sort_tab(char **tab, int size);
-
 void	ls_main(t_list *begin, int *flag, int multidir);
-
 void	getdata(t_file **files, char *name, char *path, int *flag);
-t_file	*storedata(t_list *file, int *flag);
-
-//debug
-
-void	printtab(char **str, int size);
-void	printlst(t_list *begin);
-void	printlstfile(t_file *begin);
-void	printsize(t_size *size);
 
 // display
+void    display_lnk(t_file *lst, char buf[NAME_MAX]);
 void    ft_display(t_file *list, int *flag, _Bool fileordir);
+void    ft_simple_display(t_file *list, int *flag);
 void    print_error(char *content, int error);
 void    dir_name(char *dirname, _Bool first);
-void	ft_printperms(char perm[11], int mode);
 void	ft_print_int(int nb, int size);
 void	ft_print_str(char *str, int size);
 void	ft_print_majmin(t_file *file, t_size size);
 void	print_date(time_t date);
 void	ft_getperms(char perm[11], int mode);
+void	ft_color(char prm[11]);
+void	do_lsdir(t_file *files, int *flag);
 
 // free
 void	freelst(t_file **begin);
 void	freecontent(void *content, size_t contentsize);
+void	freenode(t_file *node);
 
 //sort
 void 	ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*));

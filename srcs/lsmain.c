@@ -13,51 +13,59 @@ t_file	*storedata(t_list *file, int *flag)
 	return (list);
 }
 
-void	ls_directories(t_list *dir, int *flag, int multidir, _Bool first)
+void	ls_readdir(t_file *dir, int *flag, int multidir, _Bool first)
 {
-	t_file			*listdir;
-	t_file			*cur;
 	t_file			*lstfiles;
 	DIR				*op;
 	struct dirent	*ent;
 
 	lstfiles = NULL;
-	listdir = storedata(dir, flag);
-	ft_sortlst(&listdir, flag);
-	cur = listdir;
-	while (cur)
+	ent = NULL;
+	while (dir)
 	{
-		multidir ? dir_name(cur->name, first) : 0;
+		multidir ? dir_name(dir->name, first) : 0;
 		first = 0;
-		if ((op = opendir(cur->name)))
+		if ((op = opendir(dir->name)))
 		{
 			while ((ent = readdir(op)))
 				if (!(!(*flag & LS_a) && ent->d_name[0] == '.'))
-				{
-					getdata(&lstfiles, ent->d_name, ft_strjoin(cur->path, 
-					ft_strcmp(cur->name, "/") ? "/" : ""), flag);
-				}
-				(void)closedir(op);
-			ft_sortlst(&lstfiles, flag);
-			ft_display(lstfiles, flag, 1);
-			freelst(&lstfiles);
+					getdata(&lstfiles, ent->d_name, ft_strjoin(dir->path, 
+								ft_strcmp(dir->name, "/") ? "/" : ""), flag);
+			op ? (void)closedir(op) : 0;
+			do_lsdir(lstfiles, flag);
 		}
 		else
-			print_error(cur->name, ERRNO);
-		cur = cur->next;
+			print_error(dir->name, ERRNO);
+		dir = dir->next;
+	}	
+}
+
+void	ls_directories(t_list *dir, int *flag, int multidir, _Bool first)
+{
+	t_file			*listdir;
+
+	listdir = storedata(dir, flag);
+	if (listdir)
+	{
+		ft_sortlst(&listdir, flag);
+		ls_readdir(listdir, flag, multidir, first);
+		freelst(&listdir);
 	}
-	freelst(&listdir);
 }
 
 void	ls_files(t_list *file, int *flag, _Bool *first)
 {
 	t_file			*list;
 
+	list = NULL;
 	list = storedata(file, flag);
-	ft_sortlst(&list, flag);
-	ft_display(list, flag, 0);
-	freelst(&list);
-	*first = 0;
+	if (list)
+	{
+		ft_sortlst(&list, flag);
+		ft_display(list, flag, 0);
+		freelst(&list);
+		*first = 0;
+	}
 }
 
 void	ls_main(t_list *begin, int *flag, int multidir)
@@ -76,7 +84,7 @@ void	ls_main(t_list *begin, int *flag, int multidir)
 			print_error(begin->content, ERRNO);
 		else if (S_ISDIR(buf.st_mode) ||
 				(S_ISLNK(buf.st_mode) &&
-				!(*flag & LS_l) && !stat(begin->content, &buf)))
+				 !(*flag & LS_l) && !stat(begin->content, &buf)))
 			ft_lstpushback(&directory, begin->content, begin->content_size);
 		else
 			ft_lstpushback(&files, begin->content, begin->content_size);
@@ -84,6 +92,6 @@ void	ls_main(t_list *begin, int *flag, int multidir)
 	}
 	files ? ls_files(files, flag, &first) : NULL;
 	directory ? ls_directories(directory, flag, multidir, first) : NULL;
-	files ? ft_lstdel(&files, &ft_bzero) : 0;
-	directory ? ft_lstdel(&directory, &freecontent) : 0;
+	files ? ft_lstdel(&files, &freecontent) : 0;
+	directory ? ft_lstdel(&directory, &freecontent) : 0; ///////////////
 }
