@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   getdata.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/12 12:21:42 by cjamal            #+#    #+#             */
+/*   Updated: 2019/11/12 13:17:57 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-void        get_time(time_t *times, long *timens, struct stat buf, int *flag)
+void	get_time(time_t *times, long *timens, struct stat buf, int *flag)
 {
-	if ((*flag & LS_u))
+	if ((*flag & LS_U))
 	{
 		*times = buf.st_atimespec.tv_sec;
 		*timens = buf.st_atimespec.tv_nsec;
 	}
-	else if (*flag & LS_upu)
+	else if (*flag & LS_UPU)
 	{
 		*times = buf.st_birthtimespec.tv_sec;
 		*timens = buf.st_birthtimespec.tv_nsec;
@@ -16,15 +28,16 @@ void        get_time(time_t *times, long *timens, struct stat buf, int *flag)
 	{
 		*times = buf.st_mtimespec.tv_sec;
 		*timens = buf.st_mtimespec.tv_nsec;
-	}  
+	}
 }
 
-t_file      *newnode(char *name, char *path, int *flag)
+t_file	*newnode(char *name, char *path, int *flag)
 {
-	t_file      *node;
-	struct stat buf;
+	t_file		*node;
+	struct stat	buf;
 
-	if (!(node = (t_file*)malloc(sizeof(t_file))) || !(node->name = ft_strdup(name)))
+	if (!(node = (t_file*)malloc(sizeof(t_file))) ||
+			!(node->name = ft_strdup(name)))
 		return (0);
 	if (!(node->path = ft_strjoin(path, name)))
 		return (0);
@@ -46,9 +59,9 @@ t_file      *newnode(char *name, char *path, int *flag)
 	return (node);
 }
 
-void    getdata(t_file **files, char *name, char *path, int *flag)
+void	getdata(t_file **files, char *name, char *path, int *flag)
 {
-	t_file  *list;
+	t_file		*list;
 
 	if (files && *files)
 	{
@@ -61,10 +74,9 @@ void    getdata(t_file **files, char *name, char *path, int *flag)
 			print_error(name, MALERROR);
 		}
 	}
-	else
-		if (!(*files = newnode(name, path, flag)) && errno == ENOMEM)
-		{
-			freelst(files);
-			print_error(name, MALERROR);
-		}
+	else if (!(*files = newnode(name, path, flag)) && errno == ENOMEM)
+	{
+		freelst(files);
+		print_error(name, MALERROR);
+	}
 }

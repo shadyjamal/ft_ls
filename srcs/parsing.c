@@ -1,14 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/12 12:31:10 by cjamal            #+#    #+#             */
+/*   Updated: 2019/11/12 13:15:36 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-int     is_flag(char *str)
+int		is_flag(char *str)
 {
 	if (str && str[0] == '-' && str[1])
 		return (1);
 	return (0);
 }
 
-
-int     get_index(char *str, char c)
+int		get_index(char *str, char c)
 {
 	int i;
 
@@ -19,7 +30,7 @@ int     get_index(char *str, char c)
 	return (-1);
 }
 
-int    get_flags(int *flag, char *str)
+int		get_flags(int *flag, char *str)
 {
 	int i;
 	int n;
@@ -28,18 +39,18 @@ int    get_flags(int *flag, char *str)
 	i = 0;
 	while (str[++i])
 	{
-		if ((n = get_index("alrRtuUG",str[i])) == -1)
+		if ((n = get_index("alrRtuUG", str[i])) == -1)
 			print_error(str + i, USAGE);
-		if (n == 5 && (*flag & LS_upu))
-			*flag &= ~LS_upu;
-		if (n == 6 && (*flag & LS_u))
-			*flag &= ~LS_u;
-		*flag |= (1 << n);   
+		if (n == 5 && (*flag & LS_UPU))
+			*flag &= ~LS_UPU;
+		if (n == 6 && (*flag & LS_U))
+			*flag &= ~LS_U;
+		*flag |= (1 << n);
 	}
 	return (1);
 }
 
-void    parse_arg(int ac, char **av, int *flag, t_list **begin)
+void	parse_arg(int ac, char **av, int *flag, t_list **begin)
 {
 	int i;
 	int j;
@@ -51,10 +62,10 @@ void    parse_arg(int ac, char **av, int *flag, t_list **begin)
 		if (ft_strcmp(av[i], "--") == 0)
 		{
 			i += 1;
-			break;
+			break ;
 		}
 		if (!is_flag(av[i]))
-			break;
+			break ;
 		get_flags(flag, av[i]);
 	}
 	ft_sort_tab((av += i), (ac -= i));

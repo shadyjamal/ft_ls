@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   displaydetail.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/12 12:18:50 by cjamal            #+#    #+#             */
+/*   Updated: 2019/11/12 13:17:39 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	ft_print_majmin(t_file *file, t_size size)
@@ -64,10 +76,10 @@ void	print_date(time_t date)
 	free(str_date);
 }
 
-void    dir_name(char *dirname, _Bool first)
+void	dir_name(char *dirname, _Bool first)
 {
 	if (!first)
-		write(1,"\n",1);
+		write(1, "\n", 1);
 	ft_putstr(dirname);
-	write(1,":\n",2);  
+	write(1, ":\n", 2);
 }

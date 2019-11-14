@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sortlst.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjamal <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/12 12:41:10 by cjamal            #+#    #+#             */
+/*   Updated: 2019/11/12 13:02:56 by cjamal           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int		ft_sort_tab(char **tab, int size)
@@ -20,62 +32,62 @@ int		ft_sort_tab(char **tab, int size)
 		j++;
 	}
 	return (1);
-} 
-  
-t_file* sortedmerge(t_file* a, t_file* b, int (*cmp)(t_file*, t_file*)) 
-{ 
-    t_file *result = NULL; 
-  
-    if (a == NULL) 
-        return (b); 
-    else if (b == NULL) 
-        return (a); 
-  
-    if (cmp(a, b) <= 0) 
-	{ 
-        result = a; 
-        result->next = sortedmerge(a->next, b, cmp); 
-    } 
-    else 
-	{ 
-        result = b; 
-        result->next = sortedmerge(a, b->next, cmp); 
-    } 
-    return (result); 
-} 
-
-void splitlst(t_file* source, t_file** front, t_file** back) 
-{ 
-    t_file* fast; 
-    t_file* slow; 
-
-    slow = source; 
-    fast = source->next; 
-    while (fast != NULL)
-    { 
-        fast = fast->next; 
-        if (fast != NULL) 
-        { 
-            slow = slow->next; 
-            fast = fast->next; 
-        } 
-    } 
-    *front = source;
-    *back = slow->next; 
-    slow->next = NULL; 
 }
 
-void ft_mergesortlst(t_file **headRef, int (*cmp)(t_file*, t_file*)) 
-{ 
-    t_file* head; 
-    t_file* a; 
-    t_file* b; 
+t_file	*sortedmerge(t_file *a, t_file *b, int (*cmp)(t_file*, t_file*))
+{
+	t_file	*result;
 
-    head = *headRef;
-    if ((head == NULL) || (head->next == NULL))
-        return ; 
-    splitlst(head, &a, &b); 
-    ft_mergesortlst(&a , cmp); 
-    ft_mergesortlst(&b, cmp); 
-    *headRef = sortedmerge(a, b, cmp); 
+	result = NULL;
+	if (a == NULL)
+		return (b);
+	else if (b == NULL)
+		return (a);
+	if (cmp(a, b) <= 0)
+	{
+		result = a;
+		result->next = sortedmerge(a->next, b, cmp);
+	}
+	else
+	{
+		result = b;
+		result->next = sortedmerge(a, b->next, cmp);
+	}
+	return (result);
+}
+
+void	splitlst(t_file *source, t_file **front, t_file **back)
+{
+	t_file	*fast;
+	t_file	*slow;
+
+	slow = source;
+	fast = source->next;
+	while (fast != NULL)
+	{
+		fast = fast->next;
+		if (fast != NULL)
+		{
+			slow = slow->next;
+			fast = fast->next;
+		}
+	}
+	*front = source;
+	*back = slow->next;
+	slow->next = NULL;
+}
+
+void	ft_mergesortlst(t_file **headref, int (*cmp)(t_file*, t_file*))
+{
+	t_file	*head;
+	t_file	*a;
+	t_file	*b;
+
+	head = *headref;
+	if ((head == NULL) || (head->next == NULL))
+		return ;
+	splitlst(head, &a, &b);
+	ft_mergesortlst(&a, cmp);
+	ft_mergesortlst(&b, cmp);
+	*headref = sortedmerge(a, b, cmp);
 }
